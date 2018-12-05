@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bsoft.mapper.InterfaceMapper">
+  <resultMap id="BaseResultMap" type="com.bsoft.bean.Interface">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="MODEL_ID" jdbcType="DECIMAL" property="modelId" />
+    <result column="C_INTERFACENAME" jdbcType="VARCHAR" property="cInterfacename" />
+    <result column="C_URL" jdbcType="VARCHAR" property="cUrl" />
+    <result column="C_INTERFACETYPE" jdbcType="VARCHAR" property="cInterfacetype" />
+    <result column="C_REQUESTTYPE" jdbcType="VARCHAR" property="cRequesttype" />
+    <result column="C_PARAMTYPE" jdbcType="VARCHAR" property="cParamtype" />
+    <result column="C_DESCRIPTION" jdbcType="VARCHAR" property="cDescription" />
+    <result column="D_CREATETIME" jdbcType="TIMESTAMP" property="dCreatetime" />
+    <result column="D_UPDATETIME" jdbcType="TIMESTAMP" property="dUpdatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, MODEL_ID, C_INTERFACENAME, C_URL, C_INTERFACETYPE, C_REQUESTTYPE, C_PARAMTYPE, 
+    C_DESCRIPTION, D_CREATETIME, D_UPDATETIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Short" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from T_INTERFACE
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Short">
+    delete from T_INTERFACE
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.bsoft.bean.Interface">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Short">
+      selectuuid_short()
+    </selectKey>
+    insert into T_INTERFACE (ID, MODEL_ID, C_INTERFACENAME, 
+      C_URL, C_INTERFACETYPE, C_REQUESTTYPE, 
+      C_PARAMTYPE, C_DESCRIPTION, D_CREATETIME, 
+      D_UPDATETIME)
+    values (#{id,jdbcType=DECIMAL}, #{modelId,jdbcType=DECIMAL}, #{cInterfacename,jdbcType=VARCHAR}, 
+      #{cUrl,jdbcType=VARCHAR}, #{cInterfacetype,jdbcType=VARCHAR}, #{cRequesttype,jdbcType=VARCHAR}, 
+      #{cParamtype,jdbcType=VARCHAR}, #{cDescription,jdbcType=VARCHAR}, #{dCreatetime,jdbcType=TIMESTAMP}, 
+      #{dUpdatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bsoft.bean.Interface">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Short">
+      selectuuid_short()
+    </selectKey>
+    insert into T_INTERFACE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="modelId != null">
+        MODEL_ID,
+      </if>
+      <if test="cInterfacename != null">
+        C_INTERFACENAME,
+      </if>
+      <if test="cUrl != null">
+        C_URL,
+      </if>
+      <if test="cInterfacetype != null">
+        C_INTERFACETYPE,
+      </if>
+      <if test="cRequesttype != null">
+        C_REQUESTTYPE,
+      </if>
+      <if test="cParamtype != null">
+        C_PARAMTYPE,
+      </if>
+      <if test="cDescription != null">
+        C_DESCRIPTION,
+      </if>
+      <if test="dCreatetime != null">
+        D_CREATETIME,
+      </if>
+      <if test="dUpdatetime != null">
+        D_UPDATETIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=DECIMAL},
+      <if test="modelId != null">
+        #{modelId,jdbcType=DECIMAL},
+      </if>
+      <if test="cInterfacename != null">
+        #{cInterfacename,jdbcType=VARCHAR},
+      </if>
+      <if test="cUrl != null">
+        #{cUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="cInterfacetype != null">
+        #{cInterfacetype,jdbcType=VARCHAR},
+      </if>
+      <if test="cRequesttype != null">
+        #{cRequesttype,jdbcType=VARCHAR},
+      </if>
+      <if test="cParamtype != null">
+        #{cParamtype,jdbcType=VARCHAR},
+      </if>
+      <if test="cDescription != null">
+        #{cDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="dCreatetime != null">
+        #{dCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dUpdatetime != null">
+        #{dUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bsoft.bean.Interface">
+    update T_INTERFACE
+    <set>
+      <if test="modelId != null">
+        MODEL_ID = #{modelId,jdbcType=DECIMAL},
+      </if>
+      <if test="cInterfacename != null">
+        C_INTERFACENAME = #{cInterfacename,jdbcType=VARCHAR},
+      </if>
+      <if test="cUrl != null">
+        C_URL = #{cUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="cInterfacetype != null">
+        C_INTERFACETYPE = #{cInterfacetype,jdbcType=VARCHAR},
+      </if>
+      <if test="cRequesttype != null">
+        C_REQUESTTYPE = #{cRequesttype,jdbcType=VARCHAR},
+      </if>
+      <if test="cParamtype != null">
+        C_PARAMTYPE = #{cParamtype,jdbcType=VARCHAR},
+      </if>
+      <if test="cDescription != null">
+        C_DESCRIPTION = #{cDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="dCreatetime != null">
+        D_CREATETIME = #{dCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dUpdatetime != null">
+        D_UPDATETIME = #{dUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bsoft.bean.Interface">
+    update T_INTERFACE
+    set MODEL_ID = #{modelId,jdbcType=DECIMAL},
+      C_INTERFACENAME = #{cInterfacename,jdbcType=VARCHAR},
+      C_URL = #{cUrl,jdbcType=VARCHAR},
+      C_INTERFACETYPE = #{cInterfacetype,jdbcType=VARCHAR},
+      C_REQUESTTYPE = #{cRequesttype,jdbcType=VARCHAR},
+      C_PARAMTYPE = #{cParamtype,jdbcType=VARCHAR},
+      C_DESCRIPTION = #{cDescription,jdbcType=VARCHAR},
+      D_CREATETIME = #{dCreatetime,jdbcType=TIMESTAMP},
+      D_UPDATETIME = #{dUpdatetime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>

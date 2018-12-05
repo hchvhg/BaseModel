@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- scan:开启扫描，scanPeriod：扫描时间是60秒，当配置更改时，不需要重启就可以扫描并使用新的配置。debug:是否打印logback自身的日志 -->
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+	<!--日志的五个级别 ：TRACE<DEBUG<INFO<WARN<ERROR -->
+	<!-- 定义参数常量 -->
+	<property name="log.level" value="debug" />
+	<property name="log.maxHistory" value="30" />
+	<property name="log.filePath" value="${catalina.base}/logs/webapps" />
+	<property name="log.pattern"
+		value="%d{yyyy-MM-dd HH:mm:ss:SSS} [%thread] %-5level %logger{50} -%msg%n" />
+	<!--控制台输出日志设置 -->
+	<appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${log.pattern}</pattern>
+		</encoder>
+	</appender>
+	<!-- debug级别日志输出设置 -->
+	<appender name="debugAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--文件路径，当前日志会存放在这里 -->
+		<file>${log.filePath}/debug.log</file>
+		<!-- 日志滚动策略，每天生成一个日志文件，并指定历史文件存放的位置 -->
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.filePath}/debug/debug.%d{yyyy-MM-dd}.%i.log.gz
+			</fileNamePattern>
+			<!-- 文件最大保存数量 -->
+			<MaxHistory>${log.maxHistory}</MaxHistory>
+			<!-- 单个文件最大20MB，超过会生成新的文件来记录新的日志 -->
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- maxFileSize:这是活动文件的大小，默认值是10MB，测试时可改成1KB看效果 -->
+				<maxFileSize>20MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<!-- 格式化日志输出 -->
+		<encoder>
+			<pattern>${log.pattern}</pattern>
+		</encoder>
+		<!-- 过滤器，只输出debug级别的日志 -->
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>DEBUG</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+	<!-- info级别日志输出设置 -->
+	<appender name="infoAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--文件路径 -->
+		<file>${log.filePath}/info.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.filePath}/info/info.%d{yyyy-MM-dd}.%i.log.gz
+			</fileNamePattern>
+			<MaxHistory>${log.maxHistory}</MaxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- maxFileSize:这是活动文件的大小，默认值是10MB，测试时可改成1KB看效果 -->
+				<maxFileSize>20MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${log.pattern}</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+	<!-- error级别日志输出设置 -->
+	<appender name="errorAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.filePath}/error.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.filePath}/error/error.%d{yyyy-MM-dd}.%i.log.gz
+			</fileNamePattern>
+			<MaxHistory>${log.maxHistory}</MaxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- maxFileSize:这是活动文件的大小，默认值是10MB，测试时可改成1KB看效果 -->
+				<maxFileSize>20MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${log.pattern}</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+	<!-- 输出日志配置，配置要使用的appender
+	     name:表示监听的包
+	     additivity：作用在于children-logger是否使用 rootLogger配置的appender进行输出，
+         false表示只用当前logger的appender-ref;true表示当前logger的appender-ref和rootLogger的appender-ref都有效
+	 -->
+	<logger name="com.bsoft" levle="${log.level}" additivity="true">
+		<appender-ref ref="debugAppender" />
+		<appender-ref ref="infoAppender" />
+		<appender-ref ref="errorAppender" />
+	</logger>
+	<!--
+         root与logger是父子关系，没有特别定义则默认为root，任何一个类只会和一个logger对应，
+                   要么是定义的logger，要么是root，判断的关键在于找到这个logger，然后判断这个logger的appender和level。 
+    -->
+	<root level="info">
+		<appender-ref ref="consoleAppender" />
+	</root>
+</configuration>

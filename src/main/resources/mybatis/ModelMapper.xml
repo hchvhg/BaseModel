@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bsoft.mapper.ModelMapper">
+  <resultMap id="BaseResultMap" type="com.bsoft.bean.Model">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="REPO_ID" jdbcType="DECIMAL" property="repoId" />
+    <result column="C_MODELNAME" jdbcType="VARCHAR" property="cModelname" />
+    <result column="C_DESCRIPTION" jdbcType="VARCHAR" property="cDescription" />
+    <result column="D_CREATETIME" jdbcType="TIMESTAMP" property="dCreatetime" />
+    <result column="D_UPDATETIME" jdbcType="TIMESTAMP" property="dUpdatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, REPO_ID, C_MODELNAME, C_DESCRIPTION, D_CREATETIME, D_UPDATETIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Short" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from T_MODEL
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Short">
+    delete from T_MODEL
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.bsoft.bean.Model">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Short">
+      selectuuid_short()
+    </selectKey>
+    insert into T_MODEL (ID, REPO_ID, C_MODELNAME, 
+      C_DESCRIPTION, D_CREATETIME, D_UPDATETIME
+      )
+    values (#{id,jdbcType=DECIMAL}, #{repoId,jdbcType=DECIMAL}, #{cModelname,jdbcType=VARCHAR}, 
+      #{cDescription,jdbcType=VARCHAR}, #{dCreatetime,jdbcType=TIMESTAMP}, #{dUpdatetime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.bsoft.bean.Model">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Short">
+      selectuuid_short()
+    </selectKey>
+    insert into T_MODEL
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="repoId != null">
+        REPO_ID,
+      </if>
+      <if test="cModelname != null">
+        C_MODELNAME,
+      </if>
+      <if test="cDescription != null">
+        C_DESCRIPTION,
+      </if>
+      <if test="dCreatetime != null">
+        D_CREATETIME,
+      </if>
+      <if test="dUpdatetime != null">
+        D_UPDATETIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=DECIMAL},
+      <if test="repoId != null">
+        #{repoId,jdbcType=DECIMAL},
+      </if>
+      <if test="cModelname != null">
+        #{cModelname,jdbcType=VARCHAR},
+      </if>
+      <if test="cDescription != null">
+        #{cDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="dCreatetime != null">
+        #{dCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dUpdatetime != null">
+        #{dUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bsoft.bean.Model">
+    update T_MODEL
+    <set>
+      <if test="repoId != null">
+        REPO_ID = #{repoId,jdbcType=DECIMAL},
+      </if>
+      <if test="cModelname != null">
+        C_MODELNAME = #{cModelname,jdbcType=VARCHAR},
+      </if>
+      <if test="cDescription != null">
+        C_DESCRIPTION = #{cDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="dCreatetime != null">
+        D_CREATETIME = #{dCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dUpdatetime != null">
+        D_UPDATETIME = #{dUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bsoft.bean.Model">
+    update T_MODEL
+    set REPO_ID = #{repoId,jdbcType=DECIMAL},
+      C_MODELNAME = #{cModelname,jdbcType=VARCHAR},
+      C_DESCRIPTION = #{cDescription,jdbcType=VARCHAR},
+      D_CREATETIME = #{dCreatetime,jdbcType=TIMESTAMP},
+      D_UPDATETIME = #{dUpdatetime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>

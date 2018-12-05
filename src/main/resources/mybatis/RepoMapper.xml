@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bsoft.mapper.RepoMapper">
+  <resultMap id="BaseResultMap" type="com.bsoft.bean.Repo">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="USER_ID" jdbcType="DECIMAL" property="userId" />
+    <result column="C_REPONAME" jdbcType="VARCHAR" property="cReponame" />
+    <result column="C_DESCRIPTION" jdbcType="VARCHAR" property="cDescription" />
+    <result column="D_CREATETIME" jdbcType="TIMESTAMP" property="dCreatetime" />
+    <result column="D_UPDATETIME" jdbcType="TIMESTAMP" property="dUpdatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, USER_ID, C_REPONAME, C_DESCRIPTION, D_CREATETIME, D_UPDATETIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Short" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from T_REPO
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Short">
+    delete from T_REPO
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.bsoft.bean.Repo">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Short">
+      selectuuid_short()
+    </selectKey>
+    insert into T_REPO (ID, USER_ID, C_REPONAME, 
+      C_DESCRIPTION, D_CREATETIME, D_UPDATETIME
+      )
+    values (#{id,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{cReponame,jdbcType=VARCHAR}, 
+      #{cDescription,jdbcType=VARCHAR}, #{dCreatetime,jdbcType=TIMESTAMP}, #{dUpdatetime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.bsoft.bean.Repo">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Short">
+      selectuuid_short()
+    </selectKey>
+    insert into T_REPO
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ID,
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="cReponame != null">
+        C_REPONAME,
+      </if>
+      <if test="cDescription != null">
+        C_DESCRIPTION,
+      </if>
+      <if test="dCreatetime != null">
+        D_CREATETIME,
+      </if>
+      <if test="dUpdatetime != null">
+        D_UPDATETIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=DECIMAL},
+      <if test="userId != null">
+        #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="cReponame != null">
+        #{cReponame,jdbcType=VARCHAR},
+      </if>
+      <if test="cDescription != null">
+        #{cDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="dCreatetime != null">
+        #{dCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dUpdatetime != null">
+        #{dUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bsoft.bean.Repo">
+    update T_REPO
+    <set>
+      <if test="userId != null">
+        USER_ID = #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="cReponame != null">
+        C_REPONAME = #{cReponame,jdbcType=VARCHAR},
+      </if>
+      <if test="cDescription != null">
+        C_DESCRIPTION = #{cDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="dCreatetime != null">
+        D_CREATETIME = #{dCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dUpdatetime != null">
+        D_UPDATETIME = #{dUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bsoft.bean.Repo">
+    update T_REPO
+    set USER_ID = #{userId,jdbcType=DECIMAL},
+      C_REPONAME = #{cReponame,jdbcType=VARCHAR},
+      C_DESCRIPTION = #{cDescription,jdbcType=VARCHAR},
+      D_CREATETIME = #{dCreatetime,jdbcType=TIMESTAMP},
+      D_UPDATETIME = #{dUpdatetime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>
